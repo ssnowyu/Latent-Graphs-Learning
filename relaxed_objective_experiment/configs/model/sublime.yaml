@@ -1,0 +1,28 @@
+_target_: src.models.sublime_module.SublimeModule
+
+encoder:
+  _target_: src.models.components.sublime.GCN_SUB
+  nfeat: 768
+  nhid: 300
+  nclass: 5
+  sparse: 1
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.001
+  weight_decay: 1e-5
+
+num_mixture: 5
+
+# scheduler:
+#   _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+#   _partial_: true
+#   mode: min
+#   factor: 0.1
+#   patience: 10
+
+scheduler: NULL
+
+# compile model for faster training with pytorch 2.0
+compile: false

@@ -1,0 +1,21 @@
+_target_: src.models.gat_for_chain.GAT4Chain
+
+feat_dim: 128
+
+gat_layer:
+  _target_: src.models.components.gat_layer.GATLayer
+  input_dim: ${model.feat_dim}
+  hidden_dim: 64
+  output_dim: 32
+  num_heads: 3
+
+score_layer:
+  _target_: src.models.components.score_layer.ScoreLayer
+  input_dim: 64
+  hidden_dim: 32
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 1e-3
+  weight_decay: 1e-5

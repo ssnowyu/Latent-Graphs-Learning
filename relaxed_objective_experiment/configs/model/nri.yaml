@@ -1,0 +1,35 @@
+_target_: src.models.nri_module.NRIModule
+
+encoder:
+  _target_: src.models.components.encoder.NRIEncoder
+  feat_dim: 768
+
+decoder:
+  _target_: src.models.components.decoder.EdgeMLPDecoder
+  dim_in: ${model.encoder.feat_dim}
+  dim_hidden: ${model.encoder.feat_dim}
+
+mapper:
+  _target_: src.models.components.mapper.MLPMapper
+  dim_in: 1536
+  num_mixture: 5
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.001
+  weight_decay: 1e-5
+
+num_mixture: 5
+
+# scheduler:
+#   _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+#   _partial_: true
+#   mode: min
+#   factor: 0.1
+#   patience: 10
+
+scheduler: NULL
+
+# compile model for faster training with pytorch 2.0
+compile: false

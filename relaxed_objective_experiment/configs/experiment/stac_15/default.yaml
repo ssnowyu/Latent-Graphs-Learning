@@ -1,0 +1,26 @@
+# @package _global_
+
+defaults:
+  - /experiment/default
+  - override /data: stac_15
+
+seed: 12345
+
+trainer:
+  min_epochs: 10
+  max_epochs: 300
+  gradient_clip_val: 0
+
+# data:
+#   batch_size: 16
+
+logger:
+  wandb:
+    # tags: ${tags}
+    project: Graph-Learning-STAC
+    # group: "STAC"
+
+callbacks:
+  early_stopping:
+    patience: 10
+    mode: "max"

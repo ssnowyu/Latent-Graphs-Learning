@@ -1,0 +1,38 @@
+# @package _global_
+
+defaults:
+  - /experiment/labeled_stac_10/default
+  - override /model: sublime
+
+model:
+  encoder:
+    nclass: 10
+  optimizer:
+    _target_: torch.optim.Adam
+    _partial_: true
+    lr: 0.001
+    weight_decay: 1e-5
+
+num_mixture: 10
+
+tags:
+  ["10-Mixtures", "Sublime"]
+
+  # encoder:
+  #   dim_in: 768
+  #   dim_hidden: 300
+  #   dim_out: 128
+  #   num_layers: 3
+
+  # decoder:
+  #   dim_in: 128
+  #   dim_hidden: 128
+
+  # mapper:
+  #   dim_in: 128
+  #   num_mixture: 5
+logger:
+  wandb:
+    tags: ${tags}
+    # group: "mnist"
+    name: "Sublime"

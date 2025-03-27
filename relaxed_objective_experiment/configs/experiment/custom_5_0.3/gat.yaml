@@ -1,0 +1,40 @@
+# @package _global_
+
+defaults:
+  - /experiment/custom_5_0.3/default
+  - override /model: gat
+
+model:
+  optimizer:
+    _target_: torch.optim.Adam
+    _partial_: true
+    lr: 0.001
+    weight_decay: 1e-5
+
+  learnable_feat: true
+  num_features: 5000
+  dim_feature: 128
+
+  encoder:
+    dim_in: ${model.dim_feature}
+    dim_hidden: ${model.dim_feature}
+    dim_out: ${model.dim_feature}
+    num_layers: 3
+
+  decoder:
+    _target_: src.models.components.decoder.NodeMLPDecoder
+    dim_in: ${model.encoder.dim_out}
+    dim_hidden: ${model.encoder.dim_out}
+
+  mapper:
+    _target_: src.models.components.mapper.MLPMapper
+    dim_in: ${model.encoder.dim_out}
+    num_mixture: 5
+
+tags: ["5-Mixtures", "GAT", "0.3-Overlap"]
+
+logger:
+  wandb:
+    tags: ${tags}
+    # group: "mnist"
+    name: "GAT"

@@ -1,0 +1,6 @@
+#watch_model:
+#  _target_: src.callbacks.clearml_callbacks.WatchModel
+#  save_dir: "${paths.output_dir}/models"
+
+LogMetricsAndRunningTime:
+  _target_: src.callbacks.clearml_callbacks.LogMetricsAndRunningTime

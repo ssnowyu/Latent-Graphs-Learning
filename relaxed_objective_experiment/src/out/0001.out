@@ -1,0 +1,1303 @@
+[[36m2024-01-09 01:11:42,344[0m][[35mHYDRA[0m] Launching 5 jobs locally[0m
+[[36m2024-01-09 01:11:42,345[0m][[35mHYDRA[0m] 	#0 : seed=0 experiment=diginetica_10/gcn[0m
+[[36m2024-01-09 01:11:42,663[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Enforcing tags! <cfg.extras.enforce_tags=True>[0m
+[[36m2024-01-09 01:11:42,669[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Printing config tree with Rich! <cfg.extras.print_config=True>[0m
+CONFIG
+├── data
+│   └── _target_: src.data.mixed_graph_datamodule.MixedGraphDatamodule          
+│       dataset:                                                                
+│         _target_: src.data.components.diginetica_dataset.DigineticaDataset    
+│         raw_dir: /home/snow/projects/graph-learning/data//Diginetica/processed
+│         num_mixture: 10                                                       
+│       batch_size: 64                                                          
+│       train_val_test_split:                                                   
+│       - 1400                                                                  
+│       - 400                                                                   
+│       - 200                                                                   
+│       num_workers: 0                                                          
+│       pin_memory: false                                                       
+│                                                                               
+├── model
+│   └── _target_: src.models.graph_conv_module.GraphConvModule                  
+│       encoder:                                                                
+│         _target_: src.models.components.encoder.GCNEncoder                    
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│         dim_out: 300                                                          
+│         num_layers: 3                                                         
+│       decoder:                                                                
+│         _target_: src.models.components.decoder.NodeMLPDecoder                
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│       mapper:                                                                 
+│         _target_: src.models.components.mapper.MLPMapper                      
+│         dim_in: 300                                                           
+│         num_mixture: 10                                                       
+│       optimizer:                                                              
+│         _target_: torch.optim.Adam                                            
+│         _partial_: true                                                       
+│         lr: 0.001                                                             
+│         weight_decay: 1.0e-05                                                 
+│       num_mixture: 10                                                         
+│       scheduler: null                                                         
+│       compile: false                                                          
+│       learnable_feat: true                                                    
+│       num_features: 19519                                                     
+│       dim_feature: 300                                                        
+│                                                                               
+├── callbacks
+│   └── model_checkpoint:                                                       
+│         _target_: lightning.pytorch.callbacks.ModelCheckpoint                 
+│         dirpath: /home/snow/projects/graph-learning/logs/train/multiruns/2024-
+│         filename: epoch_{epoch:03d}                                           
+│         monitor: val/f1                                                       
+│         verbose: false                                                        
+│         save_last: true                                                       
+│         save_top_k: 1                                                         
+│         mode: max                                                             
+│         auto_insert_metric_name: false                                        
+│         save_weights_only: false                                              
+│         every_n_train_steps: null                                             
+│         train_time_interval: null                                             
+│         every_n_epochs: null                                                  
+│         save_on_train_epoch_end: null                                         
+│       early_stopping:                                                         
+│         _target_: lightning.pytorch.callbacks.EarlyStopping                   
+│         monitor: val/f1                                                       
+│         min_delta: 0.0                                                        
+│         patience: 10                                                          
+│         verbose: false                                                        
+│         mode: max                                                             
+│         strict: true                                                          
+│         check_finite: true                                                    
+│         stopping_threshold: null                                              
+│         divergence_threshold: null                                            
+│         check_on_train_epoch_end: null                                        
+│       model_summary:                                                          
+│         _target_: lightning.pytorch.callbacks.RichModelSummary                
+│         max_depth: -1                                                         
+│       rich_progress_bar:                                                      
+│         _target_: lightning.pytorch.callbacks.RichProgressBar                 
+│                                                                               
+├── logger
+│   └── wandb:                                                                  
+│         _target_: lightning.pytorch.loggers.wandb.WandbLogger                 
+│         save_dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024
+│         offline: false                                                        
+│         id: null                                                              
+│         anonymous: null                                                       
+│         project: Graph-Learning-Diginetica                                  
+│         log_model: false                                                      
+│         prefix: ''                                                            
+│         group: ''                                                             
+│         tags:                                                                 
+│         - 10-Mixtures                                                         
+│         - GCN                                                                 
+│         job_type: ''                                                          
+│         name: GCN                                                             
+│                                                                               
+├── trainer
+│   └── _target_: lightning.pytorch.trainer.Trainer                             
+│       default_root_dir: /home/snow/projects/graph-learning/logs/train/multirun
+│       min_epochs: 10                                                          
+│       max_epochs: 300                                                         
+│       accelerator: gpu                                                        
+│       devices: 1                                                              
+│       check_val_every_n_epoch: 1                                              
+│       deterministic: false                                                    
+│       gradient_clip_val: 0                                                    
+│                                                                               
+├── paths
+│   └── root_dir: /home/snow/projects/graph-learning                            
+│       data_dir: /home/snow/projects/graph-learning/data/                      
+│       log_dir: /home/snow/projects/graph-learning/logs/                       
+│       output_dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024
+│       work_dir: /home/snow/projects/graph-learning/src                        
+│                                                                               
+├── extras
+│   └── ignore_warnings: false                                                  
+│       enforce_tags: true                                                      
+│       print_config: true                                                      
+│                                                                               
+├── task_name
+│   └── train                                                                   
+├── tags
+│   └── ['10-Mixtures', 'GCN']                                                  
+├── train
+│   └── True                                                                    
+├── test
+│   └── True                                                                    
+├── ckpt_path
+│   └── None                                                                    
+└── seed
+    └── 0                                                                       
+[[36m2024-01-09 01:11:42,732[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating datamodule <src.data.mixed_graph_datamodule.MixedGraphDatamodule>[0m
+[[36m2024-01-09 01:11:48,447[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating model <src.models.graph_conv_module.GraphConvModule>[0m
+[[36m2024-01-09 01:11:48,506[0m][[34mtorch.distributed.nn.jit.instantiator[0m][[32mINFO[0m] - Created a temporary directory at /tmp/tmpgop_vr8g[0m
+[[36m2024-01-09 01:11:48,507[0m][[34mtorch.distributed.nn.jit.instantiator[0m][[32mINFO[0m] - Writing /tmp/tmpgop_vr8g/_remote_module_non_scriptable.py[0m
+[[36m2024-01-09 01:11:48,573[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating callbacks...[0m
+[[36m2024-01-09 01:11:48,573[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>[0m
+[[36m2024-01-09 01:11:48,577[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>[0m
+[[36m2024-01-09 01:11:48,578[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>[0m
+[[36m2024-01-09 01:11:48,579[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>[0m
+[[36m2024-01-09 01:11:48,579[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating loggers...[0m
+[[36m2024-01-09 01:11:48,580[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating logger <lightning.pytorch.loggers.wandb.WandbLogger>[0m
+[[36m2024-01-09 01:11:48,633[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating trainer <lightning.pytorch.trainer.Trainer>[0m
+Trainer already configured with model summary callbacks: [<class 'lightning.pytorch.callbacks.rich_model_summary.RichModelSummary'>]. Skipping setting a default `ModelSummary` callback.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+[[36m2024-01-09 01:11:48,754[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Logging hyperparameters![0m
+wandb: Currently logged in as: jfluidity. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.16.1
+wandb: Run data is saved locally in /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/0/wandb/run-20240109_011150-ckjj41ev
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GCN
+wandb: ⭐️ View project at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29
+wandb: 🚀 View run at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/ckjj41ev
+[[36m2024-01-09 01:11:53,503[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting training![0m
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+┏━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃    ┃ Name             ┃ Type              ┃ Params ┃
+┡━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ 0  │ encoder          │ GCNEncoder        │  272 K │
+│ 1  │ encoder.conv_in  │ GraphConv         │ 90.3 K │
+│ 2  │ encoder.bn_in    │ BatchNorm1d       │    600 │
+│ 3  │ encoder.conv_out │ GraphConv         │ 90.3 K │
+│ 4  │ encoder.bn_out   │ BatchNorm1d       │    600 │
+│ 5  │ encoder.convs    │ ModuleList        │ 90.3 K │
+│ 6  │ encoder.convs.0  │ GraphConv         │ 90.3 K │
+│ 7  │ encoder.bns      │ ModuleList        │    600 │
+│ 8  │ encoder.bns.0    │ BatchNorm1d       │    600 │
+│ 9  │ encoder.relu     │ ReLU              │      0 │
+│ 10 │ decoder          │ NodeMLPDecoder    │  180 K │
+│ 11 │ decoder.linear1  │ Linear            │  180 K │
+│ 12 │ decoder.linear2  │ Linear            │    301 │
+│ 13 │ decoder.relu     │ ReLU              │      0 │
+│ 14 │ mapper           │ MLPMapper         │  5.0 M │
+│ 15 │ mapper.fc1       │ Linear            │  451 K │
+│ 16 │ mapper.fc2       │ Linear            │  4.5 M │
+│ 17 │ mapper.relu      │ ReLU              │      0 │
+│ 18 │ train_precision  │ BinaryPrecision   │      0 │
+│ 19 │ val_precision    │ BinaryPrecision   │      0 │
+│ 20 │ test_precision   │ BinaryPrecision   │      0 │
+│ 21 │ train_recall     │ BinaryRecall      │      0 │
+│ 22 │ val_recall       │ BinaryRecall      │      0 │
+│ 23 │ test_recall      │ BinaryRecall      │      0 │
+│ 24 │ train_f1         │ BinaryF1Score     │      0 │
+│ 25 │ val_f1           │ BinaryF1Score     │      0 │
+│ 26 │ test_f1          │ BinaryF1Score     │      0 │
+│ 27 │ train_loss       │ MeanMetric        │      0 │
+│ 28 │ val_f1_best      │ MaxMetric         │      0 │
+│ 29 │ criterion        │ BCEWithLogitsLoss │      0 │
+│ 30 │ sigmoid          │ Sigmoid           │      0 │
+│ 31 │ feat             │ Embedding         │  5.9 M │
+└────┴──────────────────┴───────────────────┴────────┘
+Trainable params: 11.3 M                                                        
+Non-trainable params: 0                                                         
+Total params: 11.3 M                                                            
+Total estimated model params size (MB): 45                                      
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/loops/fit_loop.py:293: The number of training batches (22) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+Epoch 12/299 ━━━━━━━━━━━━━━━━ 22/22 0:01:02 • 0:00:00 0.36it/s v_num: 41ev      
+                                                               train/loss_step: 
+                                                               0.018            
+                                                               val/precision:   
+                                                               0.370 val/recall:
+                                                               1.000 val/f1:    
+                                                               0.540            
+                                                               train/loss_epoch:
+                                                               0.016            
+[[36m2024-01-09 01:26:17,494[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting testing![0m
+Restoring states from the checkpoint path at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/0/checkpoints/epoch_002.ckpt
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+Loaded model weights from the checkpoint at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/0/checkpoints/epoch_002.ckpt
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'test_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃        Test metric        ┃       DataLoader 0        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│          test/f1          │    0.5432988405227661     │
+│      test/precision       │    0.3729652166366577     │
+│        test/recall        │            1.0            │
+└───────────────────────────┴───────────────────────────┘
+Testing ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4/4 0:00:05 • 0:00:00 0.87it/s 
+[[36m2024-01-09 01:26:30,038[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Best ckpt path: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/0/checkpoints/epoch_002.ckpt[0m
+[[36m2024-01-09 01:26:30,042[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Output dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/0[0m
+[[36m2024-01-09 01:26:30,043[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Closing wandb![0m
+wandb: - 0.012 MB of 0.012 MB uploaded
+wandb: \ 0.035 MB of 0.052 MB uploaded (0.006 MB deduped)
+wandb: | 0.035 MB of 0.052 MB uploaded (0.006 MB deduped)
+wandb: / 0.052 MB of 0.052 MB uploaded (0.006 MB deduped)
+wandb:                                                                                
+wandb: W&B sync reduced upload amount by 12.2%             
+wandb: 
+wandb: Run history:
+wandb:               epoch ▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▆▆▆▆▆▇▇▇▇▇█
+wandb:             test/f1 ▁
+wandb:      test/precision ▁
+wandb:         test/recall ▁
+wandb:    train/loss_epoch █▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:     train/loss_step ▅█▆▄▁
+wandb: trainer/global_step ▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▆▆▆▆▆▇▇▇▇▇███
+wandb:              val/f1 ▁▆█▅█▅▅▅▅▅▅▆▆
+wandb:       val/precision ▁▆█▄█▄▄▄▄▄▃▅▅
+wandb:          val/recall ▁████████████
+wandb: 
+wandb: Run summary:
+wandb:               epoch 13
+wandb:             test/f1 0.5433
+wandb:      test/precision 0.37297
+wandb:         test/recall 1.0
+wandb:    train/loss_epoch 0.01646
+wandb:     train/loss_step 0.0122
+wandb: trainer/global_step 286
+wandb:              val/f1 0.53966
+wandb:       val/precision 0.36954
+wandb:          val/recall 1.0
+wandb: 
+wandb: 🚀 View run GCN at: http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/ckjj41ev
+wandb: ️⚡ View job at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjc=/version_details/v2
+wandb: Synced 7 W&B file(s), 0 media file(s), 3 artifact file(s) and 1 other file(s)
+wandb: Find logs at: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/0/wandb/run-20240109_011150-ckjj41ev/logs
+[[36m2024-01-09 01:26:36,209[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Metric name is None! Skipping metric value retrieval...[0m
+[[36m2024-01-09 01:26:36,212[0m][[35mHYDRA[0m] 	#1 : seed=1 experiment=diginetica_10/gcn[0m
+[[36m2024-01-09 01:26:36,488[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Enforcing tags! <cfg.extras.enforce_tags=True>[0m
+[[36m2024-01-09 01:26:36,491[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Printing config tree with Rich! <cfg.extras.print_config=True>[0m
+CONFIG
+├── data
+│   └── _target_: src.data.mixed_graph_datamodule.MixedGraphDatamodule          
+│       dataset:                                                                
+│         _target_: src.data.components.diginetica_dataset.DigineticaDataset    
+│         raw_dir: /home/snow/projects/graph-learning/data//Diginetica/processed
+│         num_mixture: 10                                                       
+│       batch_size: 64                                                          
+│       train_val_test_split:                                                   
+│       - 1400                                                                  
+│       - 400                                                                   
+│       - 200                                                                   
+│       num_workers: 0                                                          
+│       pin_memory: false                                                       
+│                                                                               
+├── model
+│   └── _target_: src.models.graph_conv_module.GraphConvModule                  
+│       encoder:                                                                
+│         _target_: src.models.components.encoder.GCNEncoder                    
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│         dim_out: 300                                                          
+│         num_layers: 3                                                         
+│       decoder:                                                                
+│         _target_: src.models.components.decoder.NodeMLPDecoder                
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│       mapper:                                                                 
+│         _target_: src.models.components.mapper.MLPMapper                      
+│         dim_in: 300                                                           
+│         num_mixture: 10                                                       
+│       optimizer:                                                              
+│         _target_: torch.optim.Adam                                            
+│         _partial_: true                                                       
+│         lr: 0.001                                                             
+│         weight_decay: 1.0e-05                                                 
+│       num_mixture: 10                                                         
+│       scheduler: null                                                         
+│       compile: false                                                          
+│       learnable_feat: true                                                    
+│       num_features: 19519                                                     
+│       dim_feature: 300                                                        
+│                                                                               
+├── callbacks
+│   └── model_checkpoint:                                                       
+│         _target_: lightning.pytorch.callbacks.ModelCheckpoint                 
+│         dirpath: /home/snow/projects/graph-learning/logs/train/multiruns/2024-
+│         filename: epoch_{epoch:03d}                                           
+│         monitor: val/f1                                                       
+│         verbose: false                                                        
+│         save_last: true                                                       
+│         save_top_k: 1                                                         
+│         mode: max                                                             
+│         auto_insert_metric_name: false                                        
+│         save_weights_only: false                                              
+│         every_n_train_steps: null                                             
+│         train_time_interval: null                                             
+│         every_n_epochs: null                                                  
+│         save_on_train_epoch_end: null                                         
+│       early_stopping:                                                         
+│         _target_: lightning.pytorch.callbacks.EarlyStopping                   
+│         monitor: val/f1                                                       
+│         min_delta: 0.0                                                        
+│         patience: 10                                                          
+│         verbose: false                                                        
+│         mode: max                                                             
+│         strict: true                                                          
+│         check_finite: true                                                    
+│         stopping_threshold: null                                              
+│         divergence_threshold: null                                            
+│         check_on_train_epoch_end: null                                        
+│       model_summary:                                                          
+│         _target_: lightning.pytorch.callbacks.RichModelSummary                
+│         max_depth: -1                                                         
+│       rich_progress_bar:                                                      
+│         _target_: lightning.pytorch.callbacks.RichProgressBar                 
+│                                                                               
+├── logger
+│   └── wandb:                                                                  
+│         _target_: lightning.pytorch.loggers.wandb.WandbLogger                 
+│         save_dir:Graph-Learning-Digineticalearning/logs/train/multiruns/2024
+│         offline: false                                                        
+│         id: null                                                              
+│         anonymous: null                                                       
+│         project: Graph Learning (Diginetica)                                  
+│         log_model: false                                                      
+│         prefix: ''                                                            
+│         group: ''                                                             
+│         tags:                                                                 
+│         - 10-Mixtures                                                         
+│         - GCN                                                                 
+│         job_type: ''                                                          
+│         name: GCN                                                             
+│                                                                               
+├── trainer
+│   └── _target_: lightning.pytorch.trainer.Trainer                             
+│       default_root_dir: /home/snow/projects/graph-learning/logs/train/multirun
+│       min_epochs: 10                                                          
+│       max_epochs: 300                                                         
+│       accelerator: gpu                                                        
+│       devices: 1                                                              
+│       check_val_every_n_epoch: 1                                              
+│       deterministic: false                                                    
+│       gradient_clip_val: 0                                                    
+│                                                                               
+├── paths
+│   └── root_dir: /home/snow/projects/graph-learning                            
+│       data_dir: /home/snow/projects/graph-learning/data/                      
+│       log_dir: /home/snow/projects/graph-learning/logs/                       
+│       output_dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024
+│       work_dir: /home/snow/projects/graph-learning/src                        
+│                                                                               
+├── extras
+│   └── ignore_warnings: false                                                  
+│       enforce_tags: true                                                      
+│       print_config: true                                                      
+│                                                                               
+├── task_name
+│   └── train                                                                   
+├── tags
+│   └── ['10-Mixtures', 'GCN']                                                  
+├── train
+│   └── True                                                                    
+├── test
+│   └── True                                                                    
+├── ckpt_path
+│   └── None                                                                    
+└── seed
+    └── 1                                                                       
+Seed set to 1
+[[36m2024-01-09 01:26:36,557[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating datamodule <src.data.mixed_graph_datamodule.MixedGraphDatamodule>[0m
+[[36m2024-01-09 01:26:43,008[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating model <src.models.graph_conv_module.GraphConvModule>[0m
+[[36m2024-01-09 01:26:43,117[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating callbacks...[0m
+[[36m2024-01-09 01:26:43,117[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>[0m
+[[36m2024-01-09 01:26:43,121[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>[0m
+[[36m2024-01-09 01:26:43,122[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>[0m
+[[36m2024-01-09 01:26:43,123[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>[0m
+[[36m2024-01-09 01:26:43,124[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating loggers...[0m
+[[36m2024-01-09 01:26:43,124[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating logger <lightning.pytorch.loggers.wandb.WandbLogger>[0m
+[[36m2024-01-09 01:26:43,127[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating trainer <lightning.pytorch.trainer.Trainer>[0m
+Trainer already configured with model summary callbacks: [<class 'lightning.pytorch.callbacks.rich_model_summary.RichModelSummary'>]. Skipping setting a default `ModelSummary` callback.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+[[36m2024-01-09 01:26:43,145[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Logging hyperparameters![0m
+wandb: Tracking run with wandb version 0.16.1
+wandb: Run data is saved locally in /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/1/wandb/run-20240109_012643-31kxe86m
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GCN
+wandb: ⭐️ View project at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29
+wandb: 🚀 View run at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/31kxe86m
+[[36m2024-01-09 01:26:46,908[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting training![0m
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+┏━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃    ┃ Name             ┃ Type              ┃ Params ┃
+┡━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ 0  │ encoder          │ GCNEncoder        │  272 K │
+│ 1  │ encoder.conv_in  │ GraphConv         │ 90.3 K │
+│ 2  │ encoder.bn_in    │ BatchNorm1d       │    600 │
+│ 3  │ encoder.conv_out │ GraphConv         │ 90.3 K │
+│ 4  │ encoder.bn_out   │ BatchNorm1d       │    600 │
+│ 5  │ encoder.convs    │ ModuleList        │ 90.3 K │
+│ 6  │ encoder.convs.0  │ GraphConv         │ 90.3 K │
+│ 7  │ encoder.bns      │ ModuleList        │    600 │
+│ 8  │ encoder.bns.0    │ BatchNorm1d       │    600 │
+│ 9  │ encoder.relu     │ ReLU              │      0 │
+│ 10 │ decoder          │ NodeMLPDecoder    │  180 K │
+│ 11 │ decoder.linear1  │ Linear            │  180 K │
+│ 12 │ decoder.linear2  │ Linear            │    301 │
+│ 13 │ decoder.relu     │ ReLU              │      0 │
+│ 14 │ mapper           │ MLPMapper         │  5.0 M │
+│ 15 │ mapper.fc1       │ Linear            │  451 K │
+│ 16 │ mapper.fc2       │ Linear            │  4.5 M │
+│ 17 │ mapper.relu      │ ReLU              │      0 │
+│ 18 │ train_precision  │ BinaryPrecision   │      0 │
+│ 19 │ val_precision    │ BinaryPrecision   │      0 │
+│ 20 │ test_precision   │ BinaryPrecision   │      0 │
+│ 21 │ train_recall     │ BinaryRecall      │      0 │
+│ 22 │ val_recall       │ BinaryRecall      │      0 │
+│ 23 │ test_recall      │ BinaryRecall      │      0 │
+│ 24 │ train_f1         │ BinaryF1Score     │      0 │
+│ 25 │ val_f1           │ BinaryF1Score     │      0 │
+│ 26 │ test_f1          │ BinaryF1Score     │      0 │
+│ 27 │ train_loss       │ MeanMetric        │      0 │
+│ 28 │ val_f1_best      │ MaxMetric         │      0 │
+│ 29 │ criterion        │ BCEWithLogitsLoss │      0 │
+│ 30 │ sigmoid          │ Sigmoid           │      0 │
+│ 31 │ feat             │ Embedding         │  5.9 M │
+└────┴──────────────────┴───────────────────┴────────┘
+Trainable params: 11.3 M                                                        
+Non-trainable params: 0                                                         
+Total params: 11.3 M                                                            
+Total estimated model params size (MB): 45                                      
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/loops/fit_loop.py:293: The number of training batches (22) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+Epoch 67/299 ━━━━━━━━━━━━━━━━ 22/22 0:00:43 • 0:00:00 0.51it/s v_num: e86m      
+                                                               train/loss_step: 
+                                                               0.016            
+                                                               val/precision:   
+                                                               0.431 val/recall:
+                                                               1.000 val/f1:    
+                                                               0.603            
+                                                               train/loss_epoch:
+                                                               0.015            
+[[36m2024-01-09 02:44:37,372[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting testing![0m
+Restoring states from the checkpoint path at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/1/checkpoints/epoch_057.ckpt
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+Loaded model weights from the checkpoint at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/1/checkpoints/epoch_057.ckpt
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'test_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃        Test metric        ┃       DataLoader 0        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│          test/f1          │    0.6169412732124329     │
+│      test/precision       │    0.4460701644420624     │
+│        test/recall        │            1.0            │
+└───────────────────────────┴───────────────────────────┘
+Testing ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4/4 0:00:03 • 0:00:00 1.29it/s 
+[[36m2024-01-09 02:44:47,805[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Best ckpt path: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/1/checkpoints/epoch_057.ckpt[0m
+[[36m2024-01-09 02:44:47,807[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Output dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/1[0m
+[[36m2024-01-09 02:44:47,807[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Closing wandb![0m
+wandb: - 0.026 MB of 0.026 MB uploaded
+wandb: \ 0.026 MB of 0.026 MB uploaded
+wandb: | 0.079 MB of 0.079 MB uploaded (0.019 MB deduped)
+wandb:                                                                                
+wandb: W&B sync reduced upload amount by 23.8%             
+wandb: 
+wandb: Run history:
+wandb:               epoch ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▃▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇▇██
+wandb:             test/f1 ▁
+wandb:      test/precision ▁
+wandb:         test/recall ▁
+wandb:    train/loss_epoch █▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:     train/loss_step ▂▂▁▂▂▂▂▂▂▂▂▂▂▂▂█▂▂▂▂▁▂▂▁▃▁▂▂▂
+wandb: trainer/global_step ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+wandb:              val/f1 ▅▅▅▅▅▅▅▅▅▆▆▆▆▆▆▆▆▆▆▆▁▆▇█▇▇██████████████
+wandb:       val/precision ▄▅▅▅▅▅▅▅▅▅▅▅▅▅▆▆▅▆▆▅▁▆▇█▇▇██████████████
+wandb:          val/recall ████████████████████▁███████████████████
+wandb: 
+wandb: Run summary:
+wandb:               epoch 68
+wandb:             test/f1 0.61694
+wandb:      test/precision 0.44607
+wandb:         test/recall 1.0
+wandb:    train/loss_epoch 0.01545
+wandb:     train/loss_step 0.01547
+wandb: trainer/global_step 1496
+wandb:              val/f1 0.60284
+wandb:       val/precision 0.43147
+wandb:          val/recall 1.0
+wandb: 
+wandb: 🚀 View run GCN at: http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/31kxe86m
+wandb: ️⚡ View job at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjY=/version_details/v3
+wandb: Synced 7 W&B file(s), 0 media file(s), 3 artifact file(s) and 1 other file(s)
+wandb: Find logs at: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/1/wandb/run-20240109_012643-31kxe86m/logs
+[[36m2024-01-09 02:44:54,357[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Metric name is None! Skipping metric value retrieval...[0m
+[[36m2024-01-09 02:44:54,360[0m][[35mHYDRA[0m] 	#2 : seed=2 experiment=diginetica_10/gcn[0m
+[[36m2024-01-09 02:44:54,712[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Enforcing tags! <cfg.extras.enforce_tags=True>[0m
+[[36m2024-01-09 02:44:54,715[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Printing config tree with Rich! <cfg.extras.print_config=True>[0m
+CONFIG
+├── data
+│   └── _target_: src.data.mixed_graph_datamodule.MixedGraphDatamodule          
+│       dataset:                                                                
+│         _target_: src.data.components.diginetica_dataset.DigineticaDataset    
+│         raw_dir: /home/snow/projects/graph-learning/data//Diginetica/processed
+│         num_mixture: 10                                                       
+│       batch_size: 64                                                          
+│       train_val_test_split:                                                   
+│       - 1400                                                                  
+│       - 400                                                                   
+│       - 200                                                                   
+│       num_workers: 0                                                          
+│       pin_memory: false                                                       
+│                                                                               
+├── model
+│   └── _target_: src.models.graph_conv_module.GraphConvModule                  
+│       encoder:                                                                
+│         _target_: src.models.components.encoder.GCNEncoder                    
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│         dim_out: 300                                                          
+│         num_layers: 3                                                         
+│       decoder:                                                                
+│         _target_: src.models.components.decoder.NodeMLPDecoder                
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│       mapper:                                                                 
+│         _target_: src.models.components.mapper.MLPMapper                      
+│         dim_in: 300                                                           
+│         num_mixture: 10                                                       
+│       optimizer:                                                              
+│         _target_: torch.optim.Adam                                            
+│         _partial_: true                                                       
+│         lr: 0.001                                                             
+│         weight_decay: 1.0e-05                                                 
+│       num_mixture: 10                                                         
+│       scheduler: null                                                         
+│       compile: false                                                          
+│       learnable_feat: true                                                    
+│       num_features: 19519                                                     
+│       dim_feature: 300                                                        
+│                                                                               
+├── callbacks
+│   └── model_checkpoint:                                                       
+│         _target_: lightning.pytorch.callbacks.ModelCheckpoint                 
+│         dirpath: /home/snow/projects/graph-learning/logs/train/multiruns/2024-
+│         filename: epoch_{epoch:03d}                                           
+│         monitor: val/f1                                                       
+│         verbose: false                                                        
+│         save_last: true                                                       
+│         save_top_k: 1                                                         
+│         mode: max                                                             
+│         auto_insert_metric_name: false                                        
+│         save_weights_only: false                                              
+│         every_n_train_steps: null                                             
+│         train_time_interval: null                                             
+│         every_n_epochs: null                                                  
+│         save_on_train_epoch_end: null                                         
+│       early_stopping:                                                         
+│         _target_: lightning.pytorch.callbacks.EarlyStopping                   
+│         monitor: val/f1                                                       
+│         min_delta: 0.0                                                        
+│         patience: 10                                                          
+│         verbose: false                                                        
+│         mode: max                                                             
+│         strict: true                                                          
+│         check_finite: true                                                    
+│         stopping_threshold: null                                              
+│         divergence_threshold: null                                            
+│         check_on_train_epoch_end: null                                        
+│       model_summary:                                                          
+│         _target_: lightning.pytorch.callbacks.RichModelSummary                
+│         max_depth: -1                                                         
+│       rich_progress_bar:                                                      
+│         _target_: lightning.pytorch.callbacks.RichProgressBar                 
+│                                                                               
+├── loggerGraph-Learning-Diginetica
+│   └── wandb:                                                                  
+│         _target_: lightning.pytorch.loggers.wandb.WandbLogger                 
+│         save_dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024
+│         offline: false                                                        
+│         id: null                                                              
+│         anonymous: null                                                       
+│         project: Graph Learning (Diginetica)                                  
+│         log_model: false                                                      
+│         prefix: ''                                                            
+│         group: ''                                                             
+│         tags:                                                                 
+│         - 10-Mixtures                                                         
+│         - GCN                                                                 
+│         job_type: ''                                                          
+│         name: GCN                                                             
+│                                                                               
+├── trainer
+│   └── _target_: lightning.pytorch.trainer.Trainer                             
+│       default_root_dir: /home/snow/projects/graph-learning/logs/train/multirun
+│       min_epochs: 10                                                          
+│       max_epochs: 300                                                         
+│       accelerator: gpu                                                        
+│       devices: 1                                                              
+│       check_val_every_n_epoch: 1                                              
+│       deterministic: false                                                    
+│       gradient_clip_val: 0                                                    
+│                                                                               
+├── paths
+│   └── root_dir: /home/snow/projects/graph-learning                            
+│       data_dir: /home/snow/projects/graph-learning/data/                      
+│       log_dir: /home/snow/projects/graph-learning/logs/                       
+│       output_dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024
+│       work_dir: /home/snow/projects/graph-learning/src                        
+│                                                                               
+├── extras
+│   └── ignore_warnings: false                                                  
+│       enforce_tags: true                                                      
+│       print_config: true                                                      
+│                                                                               
+├── task_name
+│   └── train                                                                   
+├── tags
+│   └── ['10-Mixtures', 'GCN']                                                  
+├── train
+│   └── True                                                                    
+├── test
+│   └── True                                                                    
+├── ckpt_path
+│   └── None                                                                    
+└── seed
+    └── 2                                                                       
+Seed set to 2
+[[36m2024-01-09 02:44:54,792[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating datamodule <src.data.mixed_graph_datamodule.MixedGraphDatamodule>[0m
+[[36m2024-01-09 02:45:00,654[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating model <src.models.graph_conv_module.GraphConvModule>[0m
+[[36m2024-01-09 02:45:00,744[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating callbacks...[0m
+[[36m2024-01-09 02:45:00,744[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>[0m
+[[36m2024-01-09 02:45:00,748[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>[0m
+[[36m2024-01-09 02:45:00,749[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>[0m
+[[36m2024-01-09 02:45:00,750[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>[0m
+[[36m2024-01-09 02:45:00,751[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating loggers...[0m
+[[36m2024-01-09 02:45:00,751[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating logger <lightning.pytorch.loggers.wandb.WandbLogger>[0m
+[[36m2024-01-09 02:45:00,755[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating trainer <lightning.pytorch.trainer.Trainer>[0m
+Trainer already configured with model summary callbacks: [<class 'lightning.pytorch.callbacks.rich_model_summary.RichModelSummary'>]. Skipping setting a default `ModelSummary` callback.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+[[36m2024-01-09 02:45:00,767[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Logging hyperparameters![0m
+[[36m2024-01-09 02:45:02,794[0m][[34murllib3.connectionpool[0m][[33mWARNING[0m] - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:1129)'))': /api/4504800232407040/envelope/[0m
+wandb: Tracking run with wandb version 0.16.1
+wandb: Run data is saved locally in /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/2/wandb/run-20240109_024500-zzkxmr3x
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GCN
+wandb: ⭐️ View project at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29
+wandb: 🚀 View run at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/zzkxmr3x
+[[36m2024-01-09 02:45:04,281[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting training![0m
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+┏━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃    ┃ Name             ┃ Type              ┃ Params ┃
+┡━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ 0  │ encoder          │ GCNEncoder        │  272 K │
+│ 1  │ encoder.conv_in  │ GraphConv         │ 90.3 K │
+│ 2  │ encoder.bn_in    │ BatchNorm1d       │    600 │
+│ 3  │ encoder.conv_out │ GraphConv         │ 90.3 K │
+│ 4  │ encoder.bn_out   │ BatchNorm1d       │    600 │
+│ 5  │ encoder.convs    │ ModuleList        │ 90.3 K │
+│ 6  │ encoder.convs.0  │ GraphConv         │ 90.3 K │
+│ 7  │ encoder.bns      │ ModuleList        │    600 │
+│ 8  │ encoder.bns.0    │ BatchNorm1d       │    600 │
+│ 9  │ encoder.relu     │ ReLU              │      0 │
+│ 10 │ decoder          │ NodeMLPDecoder    │  180 K │
+│ 11 │ decoder.linear1  │ Linear            │  180 K │
+│ 12 │ decoder.linear2  │ Linear            │    301 │
+│ 13 │ decoder.relu     │ ReLU              │      0 │
+│ 14 │ mapper           │ MLPMapper         │  5.0 M │
+│ 15 │ mapper.fc1       │ Linear            │  451 K │
+│ 16 │ mapper.fc2       │ Linear            │  4.5 M │
+│ 17 │ mapper.relu      │ ReLU              │      0 │
+│ 18 │ train_precision  │ BinaryPrecision   │      0 │
+│ 19 │ val_precision    │ BinaryPrecision   │      0 │
+│ 20 │ test_precision   │ BinaryPrecision   │      0 │
+│ 21 │ train_recall     │ BinaryRecall      │      0 │
+│ 22 │ val_recall       │ BinaryRecall      │      0 │
+│ 23 │ test_recall      │ BinaryRecall      │      0 │
+│ 24 │ train_f1         │ BinaryF1Score     │      0 │
+│ 25 │ val_f1           │ BinaryF1Score     │      0 │
+│ 26 │ test_f1          │ BinaryF1Score     │      0 │
+│ 27 │ train_loss       │ MeanMetric        │      0 │
+│ 28 │ val_f1_best      │ MaxMetric         │      0 │
+│ 29 │ criterion        │ BCEWithLogitsLoss │      0 │
+│ 30 │ sigmoid          │ Sigmoid           │      0 │
+│ 31 │ feat             │ Embedding         │  5.9 M │
+└────┴──────────────────┴───────────────────┴────────┘
+Trainable params: 11.3 M                                                        
+Non-trainable params: 0                                                         
+Total params: 11.3 M                                                            
+Total estimated model params size (MB): 45                                      
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/loops/fit_loop.py:293: The number of training batches (22) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+Epoch 12/299 ━━━━━━━━━━━━━━━━ 22/22 0:00:43 • 0:00:00 0.51it/s v_num: mr3x      
+                                                               train/loss_step: 
+                                                               0.015            
+                                                               val/precision:   
+                                                               0.364 val/recall:
+                                                               1.000 val/f1:    
+                                                               0.533            
+                                                               train/loss_epoch:
+                                                               0.016            
+[[36m2024-01-09 02:56:19,361[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting testing![0m
+Restoring states from the checkpoint path at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/2/checkpoints/epoch_002.ckpt
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+Loaded model weights from the checkpoint at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/2/checkpoints/epoch_002.ckpt
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'test_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃        Test metric        ┃       DataLoader 0        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│          test/f1          │    0.5430671572685242     │
+│      test/precision       │    0.37274685502052307    │
+│        test/recall        │            1.0            │
+└───────────────────────────┴───────────────────────────┘
+Testing ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4/4 0:00:03 • 0:00:00 1.27it/s 
+[[36m2024-01-09 02:56:29,841[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Best ckpt path: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/2/checkpoints/epoch_002.ckpt[0m
+[[36m2024-01-09 02:56:29,842[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Output dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/2[0m
+[[36m2024-01-09 02:56:29,843[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Closing wandb![0m
+wandb: - 0.047 MB of 0.047 MB uploaded
+wandb: \ 0.047 MB of 0.047 MB uploaded
+wandb: | 0.123 MB of 0.123 MB uploaded (0.019 MB deduped)
+wandb:                                                                                
+wandb: W&B sync reduced upload amount by 15.4%             
+wandb: 
+wandb: Run history:
+wandb:               epoch ▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▆▆▆▆▆▇▇▇▇▇█
+wandb:             test/f1 ▁
+wandb:      test/precision ▁
+wandb:         test/recall ▁
+wandb:    train/loss_epoch █▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:     train/loss_step █▇█▃▁
+wandb: trainer/global_step ▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▆▆▆▆▆▇▇▇▇▇███
+wandb:              val/f1 ▁▇█▇▇▇▇▇██▇▇▇
+wandb:       val/precision ▁▇█▇▇▇▇▇██▇▇▇
+wandb:          val/recall ▁████████████
+wandb: 
+wandb: Run summary:
+wandb:               epoch 13
+wandb:             test/f1 0.54307
+wandb:      test/precision 0.37275
+wandb:         test/recall 1.0
+wandb:    train/loss_epoch 0.01589
+wandb:     train/loss_step 0.01519
+wandb: trainer/global_step 286
+wandb:              val/f1 0.5332
+wandb:       val/precision 0.36352
+wandb:          val/recall 1.0
+wandb: 
+wandb: 🚀 View run GCN at: http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/zzkxmr3x
+wandb: ️⚡ View job at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjY=/version_details/v4
+wandb: Synced 7 W&B file(s), 0 media file(s), 3 artifact file(s) and 1 other file(s)
+wandb: Find logs at: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/2/wandb/run-20240109_024500-zzkxmr3x/logs
+[[36m2024-01-09 02:56:35,796[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Metric name is None! Skipping metric value retrieval...[0m
+[[36m2024-01-09 02:56:35,799[0m][[35mHYDRA[0m] 	#3 : seed=3 experiment=diginetica_10/gcn[0m
+[[36m2024-01-09 02:56:36,174[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Enforcing tags! <cfg.extras.enforce_tags=True>[0m
+[[36m2024-01-09 02:56:36,176[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Printing config tree with Rich! <cfg.extras.print_config=True>[0m
+CONFIG
+├── data
+│   └── _target_: src.data.mixed_graph_datamodule.MixedGraphDatamodule          
+│       dataset:                                                                
+│         _target_: src.data.components.diginetica_dataset.DigineticaDataset    
+│         raw_dir: /home/snow/projects/graph-learning/data//Diginetica/processed
+│         num_mixture: 10                                                       
+│       batch_size: 64                                                          
+│       train_val_test_split:                                                   
+│       - 1400                                                                  
+│       - 400                                                                   
+│       - 200                                                                   
+│       num_workers: 0                                                          
+│       pin_memory: false                                                       
+│                                                                               
+├── model
+│   └── _target_: src.models.graph_conv_module.GraphConvModule                  
+│       encoder:                                                                
+│         _target_: src.models.components.encoder.GCNEncoder                    
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│         dim_out: 300                                                          
+│         num_layers: 3                                                         
+│       decoder:                                                                
+│         _target_: src.models.components.decoder.NodeMLPDecoder                
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│       mapper:                                                                 
+│         _target_: src.models.components.mapper.MLPMapper                      
+│         dim_in: 300                                                           
+│         num_mixture: 10                                                       
+│       optimizer:                                                              
+│         _target_: torch.optim.Adam                                            
+│         _partial_: true                                                       
+│         lr: 0.001                                                             
+│         weight_decay: 1.0e-05                                                 
+│       num_mixture: 10                                                         
+│       scheduler: null                                                         
+│       compile: false                                                          
+│       learnable_feat: true                                                    
+│       num_features: 19519                                                     
+│       dim_feature: 300                                                        
+│                                                                               
+├── callbacks
+│   └── model_checkpoint:                                                       
+│         _target_: lightning.pytorch.callbacks.ModelCheckpoint                 
+│         dirpath: /home/snow/projects/graph-learning/logs/train/multiruns/2024-
+│         filename: epoch_{epoch:03d}                                           
+│         monitor: val/f1                                                       
+│         verbose: false                                                        
+│         save_last: true                                                       
+│         save_top_k: 1                                                         
+│         mode: max                                                             
+│         auto_insert_metric_name: false                                        
+│         save_weights_only: false                                              
+│         every_n_train_steps: null                                             
+│         train_time_interval: null                                             
+│         every_n_epochs: null                                                  
+│         save_on_train_epoch_end: null                                         
+│       early_stopping:                                                         
+│         _target_: lightning.pytorch.callbacks.EarlyStopping                   
+│         monitor: val/f1                                                       
+│         min_delta: 0.0                                                        
+│         patience: 10                                                          
+│         verbose: false                                                        
+│         mode: max                                                             
+│         strict: true                                                          
+│         check_finite: true                                                    
+│         stopping_threshold: null                                              
+│         divergence_threshold: null                                            
+│         check_on_train_epoch_end: null                                        
+│       model_summary:                                                          
+│         _target_: lightning.pytorch.callbacks.RichModelSummary                
+│         max_depth: -1                                                         
+│       rich_progreGraph-Learning-Diginetica                                  
+│         _target_: lightning.pytorch.callbacks.RichProgressBar                 
+│                                                                               
+├── logger
+│   └── wandb:                                                                  
+│         _target_: lightning.pytorch.loggers.wandb.WandbLogger                 
+│         save_dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024
+│         offline: false                                                        
+│         id: null                                                              
+│         anonymous: null                                                       
+│         project: Graph Learning (Diginetica)                                  
+│         log_model: false                                                      
+│         prefix: ''                                                            
+│         group: ''                                                             
+│         tags:                                                                 
+│         - 10-Mixtures                                                         
+│         - GCN                                                                 
+│         job_type: ''                                                          
+│         name: GCN                                                             
+│                                                                               
+├── trainer
+│   └── _target_: lightning.pytorch.trainer.Trainer                             
+│       default_root_dir: /home/snow/projects/graph-learning/logs/train/multirun
+│       min_epochs: 10                                                          
+│       max_epochs: 300                                                         
+│       accelerator: gpu                                                        
+│       devices: 1                                                              
+│       check_val_every_n_epoch: 1                                              
+│       deterministic: false                                                    
+│       gradient_clip_val: 0                                                    
+│                                                                               
+├── paths
+│   └── root_dir: /home/snow/projects/graph-learning                            
+│       data_dir: /home/snow/projects/graph-learning/data/                      
+│       log_dir: /home/snow/projects/graph-learning/logs/                       
+│       output_dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024
+│       work_dir: /home/snow/projects/graph-learning/src                        
+│                                                                               
+├── extras
+│   └── ignore_warnings: false                                                  
+│       enforce_tags: true                                                      
+│       print_config: true                                                      
+│                                                                               
+├── task_name
+│   └── train                                                                   
+├── tags
+│   └── ['10-Mixtures', 'GCN']                                                  
+├── train
+│   └── True                                                                    
+├── test
+│   └── True                                                                    
+├── ckpt_path
+│   └── None                                                                    
+└── seed
+    └── 3                                                                       
+Seed set to 3
+[[36m2024-01-09 02:56:36,254[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating datamodule <src.data.mixed_graph_datamodule.MixedGraphDatamodule>[0m
+[[36m2024-01-09 02:56:42,044[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating model <src.models.graph_conv_module.GraphConvModule>[0m
+[[36m2024-01-09 02:56:42,133[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating callbacks...[0m
+[[36m2024-01-09 02:56:42,134[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>[0m
+[[36m2024-01-09 02:56:42,137[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>[0m
+[[36m2024-01-09 02:56:42,138[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>[0m
+[[36m2024-01-09 02:56:42,139[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>[0m
+[[36m2024-01-09 02:56:42,140[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating loggers...[0m
+[[36m2024-01-09 02:56:42,140[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating logger <lightning.pytorch.loggers.wandb.WandbLogger>[0m
+[[36m2024-01-09 02:56:42,143[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating trainer <lightning.pytorch.trainer.Trainer>[0m
+Trainer already configured with model summary callbacks: [<class 'lightning.pytorch.callbacks.rich_model_summary.RichModelSummary'>]. Skipping setting a default `ModelSummary` callback.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+[[36m2024-01-09 02:56:42,156[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Logging hyperparameters![0m
+wandb: Tracking run with wandb version 0.16.1
+wandb: Run data is saved locally in /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/3/wandb/run-20240109_025642-e9wpgsku
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GCN
+wandb: ⭐️ View project at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29
+wandb: 🚀 View run at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/e9wpgsku
+[[36m2024-01-09 02:56:45,672[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting training![0m
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+┏━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃    ┃ Name             ┃ Type              ┃ Params ┃
+┡━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ 0  │ encoder          │ GCNEncoder        │  272 K │
+│ 1  │ encoder.conv_in  │ GraphConv         │ 90.3 K │
+│ 2  │ encoder.bn_in    │ BatchNorm1d       │    600 │
+│ 3  │ encoder.conv_out │ GraphConv         │ 90.3 K │
+│ 4  │ encoder.bn_out   │ BatchNorm1d       │    600 │
+│ 5  │ encoder.convs    │ ModuleList        │ 90.3 K │
+│ 6  │ encoder.convs.0  │ GraphConv         │ 90.3 K │
+│ 7  │ encoder.bns      │ ModuleList        │    600 │
+│ 8  │ encoder.bns.0    │ BatchNorm1d       │    600 │
+│ 9  │ encoder.relu     │ ReLU              │      0 │
+│ 10 │ decoder          │ NodeMLPDecoder    │  180 K │
+│ 11 │ decoder.linear1  │ Linear            │  180 K │
+│ 12 │ decoder.linear2  │ Linear            │    301 │
+│ 13 │ decoder.relu     │ ReLU              │      0 │
+│ 14 │ mapper           │ MLPMapper         │  5.0 M │
+│ 15 │ mapper.fc1       │ Linear            │  451 K │
+│ 16 │ mapper.fc2       │ Linear            │  4.5 M │
+│ 17 │ mapper.relu      │ ReLU              │      0 │
+│ 18 │ train_precision  │ BinaryPrecision   │      0 │
+│ 19 │ val_precision    │ BinaryPrecision   │      0 │
+│ 20 │ test_precision   │ BinaryPrecision   │      0 │
+│ 21 │ train_recall     │ BinaryRecall      │      0 │
+│ 22 │ val_recall       │ BinaryRecall      │      0 │
+│ 23 │ test_recall      │ BinaryRecall      │      0 │
+│ 24 │ train_f1         │ BinaryF1Score     │      0 │
+│ 25 │ val_f1           │ BinaryF1Score     │      0 │
+│ 26 │ test_f1          │ BinaryF1Score     │      0 │
+│ 27 │ train_loss       │ MeanMetric        │      0 │
+│ 28 │ val_f1_best      │ MaxMetric         │      0 │
+│ 29 │ criterion        │ BCEWithLogitsLoss │      0 │
+│ 30 │ sigmoid          │ Sigmoid           │      0 │
+│ 31 │ feat             │ Embedding         │  5.9 M │
+└────┴──────────────────┴───────────────────┴────────┘
+Trainable params: 11.3 M                                                        
+Non-trainable params: 0                                                         
+Total params: 11.3 M                                                            
+Total estimated model params size (MB): 45                                      
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/loops/fit_loop.py:293: The number of training batches (22) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+Epoch 12/299 ━━━━━━━━━━━━━━━━ 22/22 0:00:42 • 0:00:00 0.52it/s v_num: gsku      
+                                                               train/loss_step: 
+                                                               0.019            
+                                                               val/precision:   
+                                                               0.378 val/recall:
+                                                               1.000 val/f1:    
+                                                               0.549            
+                                                               train/loss_epoch:
+                                                               0.016            
+[[36m2024-01-09 03:07:50,111[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting testing![0m
+Restoring states from the checkpoint path at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/3/checkpoints/epoch_002.ckpt
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+Loaded model weights from the checkpoint at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/3/checkpoints/epoch_002.ckpt
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'test_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃        Test metric        ┃       DataLoader 0        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│          test/f1          │    0.5770634412765503     │
+│      test/precision       │    0.4055440425872803     │
+│        test/recall        │            1.0            │
+└───────────────────────────┴───────────────────────────┘
+Testing ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4/4 0:00:03 • 0:00:00 1.31it/s 
+[[36m2024-01-09 03:08:00,309[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Best ckpt path: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/3/checkpoints/epoch_002.ckpt[0m
+[[36m2024-01-09 03:08:00,311[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Output dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/3[0m
+[[36m2024-01-09 03:08:00,311[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Closing wandb![0m
+wandb: - 0.165 MB of 0.165 MB uploaded (0.019 MB deduped)
+wandb:                                                                                
+wandb: W&B sync reduced upload amount by 11.5%             
+wandb: 
+wandb: Run history:
+wandb:               epoch ▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▅▅▆▆▆▆▆▇▇▇▇▇█
+wandb:             test/f1 ▁
+wandb:      test/precision ▁
+wandb:         test/recall ▁
+wandb:    train/loss_epoch █▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:     train/loss_step ██▅▁█
+wandb: trainer/global_step ▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▅▅▆▆▆▆▆▇▇▇▇▇███
+wandb:              val/f1 ▃▂█▂▂▁▁▁▂▁▁▂▃
+wandb:       val/precision ▃▂█▂▂▁▁▁▂▁▁▂▃
+wandb:          val/recall ▁▆███████████
+wandb: 
+wandb: Run summary:
+wandb:               epoch 13
+wandb:             test/f1 0.57706
+wandb:      test/precision 0.40554
+wandb:         test/recall 1.0
+wandb:    train/loss_epoch 0.01641
+wandb:     train/loss_step 0.01795
+wandb: trainer/global_step 286
+wandb:              val/f1 0.54879
+wandb:       val/precision 0.37816
+wandb:          val/recall 1.0
+wandb: 
+wandb: 🚀 View run GCN at: http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/e9wpgsku
+wandb: ️⚡ View job at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjY=/version_details/v5
+wandb: Synced 7 W&B file(s), 0 media file(s), 3 artifact file(s) and 1 other file(s)
+wandb: Find logs at: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/3/wandb/run-20240109_025642-e9wpgsku/logs
+[[36m2024-01-09 03:08:05,193[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Metric name is None! Skipping metric value retrieval...[0m
+[[36m2024-01-09 03:08:05,195[0m][[35mHYDRA[0m] 	#4 : seed=4 experiment=diginetica_10/gcn[0m
+[[36m2024-01-09 03:08:05,564[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Enforcing tags! <cfg.extras.enforce_tags=True>[0m
+[[36m2024-01-09 03:08:05,566[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Printing config tree with Rich! <cfg.extras.print_config=True>[0m
+CONFIG
+├── data
+│   └── _target_: src.data.mixed_graph_datamodule.MixedGraphDatamodule          
+│       dataset:                                                                
+│         _target_: src.data.components.diginetica_dataset.DigineticaDataset    
+│         raw_dir: /home/snow/projects/graph-learning/data//Diginetica/processed
+│         num_mixture: 10                                                       
+│       batch_size: 64                                                          
+│       train_val_test_split:                                                   
+│       - 1400                                                                  
+│       - 400                                                                   
+│       - 200                                                                   
+│       num_workers: 0                                                          
+│       pin_memory: false                                                       
+│                                                                               
+├── model
+│   └── _target_: src.models.graph_conv_module.GraphConvModule                  
+│       encoder:                                                                
+│         _target_: src.models.components.encoder.GCNEncoder                    
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│         dim_out: 300                                                          
+│         num_layers: 3                                                         
+│       decoder:                                                                
+│         _target_: src.models.components.decoder.NodeMLPDecoder                
+│         dim_in: 300                                                           
+│         dim_hidden: 300                                                       
+│       mapper:                                                                 
+│         _target_: src.models.components.mapper.MLPMapper                      
+│         dim_in: 300                                                           
+│         num_mixture: 10                                                       
+│       optimizer:                                                              
+│         _target_: torch.optim.Adam                                            
+│         _partial_: true                                                       
+│         lr: 0.001                                                             
+│         weight_decay: 1.0e-05                                                 
+│       num_mixture: 10                                                         
+│       scheduler: null                                                         
+│       compile: false                                                          
+│       learnable_feat: true                                                    
+│       num_features: 19519                                                     
+│       dim_feature: 300                                                        
+│                                                                               
+├── callbacks
+│   └── model_checkpoint:                                                       
+│         _target_: lightning.pytorch.callbacks.ModelCheckpoint                 
+│         dirpath: /home/snow/projects/graph-learning/logs/train/multiruns/2024-
+│         filename: epoch_{epoch:03d}                                           
+│         monitor: val/f1                                                       
+│         verbose: false                                                        
+│         save_last: true                                                       
+│         save_top_k: 1                                                         
+│         mode: max                                                             
+│         auto_insert_metric_name: false                                        
+│         save_weights_only: false                                              
+│         every_n_train_steps: null                                             
+│         train_time_interval: null                                             
+│         every_n_epochs: null                                                  
+│         save_on_train_epoch_end: null                                         
+│       early_stopping:                                                         
+│         _target_: lightning.pytorch.callbacks.EarlyStopping                   
+│         monitor: val/f1                                                       
+│         min_delta: 0.0                                                        
+│         patience: 10                                                          
+│         verbose: false                                                        
+│         mode: max                                                             
+│         strict: true                                                          
+│         check_finite: true                                                    
+│         stopping_threshold: null                                              
+│         divergence_threshold: null                                            
+│         check_on_train_epoch_end: null                                        
+│       model_summary:                                                          
+│         _target_: lightning.pytorch.callbacks.RichModelSummary                
+│         max_depthGraph-Learning-Diginetica                                  
+│       rich_progress_bar:                                                      
+│         _target_: lightning.pytorch.callbacks.RichProgressBar                 
+│                                                                               
+├── logger
+│   └── wandb:                                                                  
+│         _target_: lightning.pytorch.loggers.wandb.WandbLogger                 
+│         save_dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024
+│         offline: false                                                        
+│         id: null                                                              
+│         anonymous: null                                                       
+│         project: Graph Learning (Diginetica)                                  
+│         log_model: false                                                      
+│         prefix: ''                                                            
+│         group: ''                                                             
+│         tags:                                                                 
+│         - 10-Mixtures                                                         
+│         - GCN                                                                 
+│         job_type: ''                                                          
+│         name: GCN                                                             
+│                                                                               
+├── trainer
+│   └── _target_: lightning.pytorch.trainer.Trainer                             
+│       default_root_dir: /home/snow/projects/graph-learning/logs/train/multirun
+│       min_epochs: 10                                                          
+│       max_epochs: 300                                                         
+│       accelerator: gpu                                                        
+│       devices: 1                                                              
+│       check_val_every_n_epoch: 1                                              
+│       deterministic: false                                                    
+│       gradient_clip_val: 0                                                    
+│                                                                               
+├── paths
+│   └── root_dir: /home/snow/projects/graph-learning                            
+│       data_dir: /home/snow/projects/graph-learning/data/                      
+│       log_dir: /home/snow/projects/graph-learning/logs/                       
+│       output_dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024
+│       work_dir: /home/snow/projects/graph-learning/src                        
+│                                                                               
+├── extras
+│   └── ignore_warnings: false                                                  
+│       enforce_tags: true                                                      
+│       print_config: true                                                      
+│                                                                               
+├── task_name
+│   └── train                                                                   
+├── tags
+│   └── ['10-Mixtures', 'GCN']                                                  
+├── train
+│   └── True                                                                    
+├── test
+│   └── True                                                                    
+├── ckpt_path
+│   └── None                                                                    
+└── seed
+    └── 4                                                                       
+Seed set to 4
+[[36m2024-01-09 03:08:05,643[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating datamodule <src.data.mixed_graph_datamodule.MixedGraphDatamodule>[0m
+[[36m2024-01-09 03:08:11,138[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating model <src.models.graph_conv_module.GraphConvModule>[0m
+[[36m2024-01-09 03:08:11,225[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating callbacks...[0m
+[[36m2024-01-09 03:08:11,226[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>[0m
+[[36m2024-01-09 03:08:11,229[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>[0m
+[[36m2024-01-09 03:08:11,230[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>[0m
+[[36m2024-01-09 03:08:11,231[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichProgressBar>[0m
+[[36m2024-01-09 03:08:11,232[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating loggers...[0m
+[[36m2024-01-09 03:08:11,232[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating logger <lightning.pytorch.loggers.wandb.WandbLogger>[0m
+[[36m2024-01-09 03:08:11,235[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating trainer <lightning.pytorch.trainer.Trainer>[0m
+Trainer already configured with model summary callbacks: [<class 'lightning.pytorch.callbacks.rich_model_summary.RichModelSummary'>]. Skipping setting a default `ModelSummary` callback.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+[[36m2024-01-09 03:08:11,246[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Logging hyperparameters![0m
+wandb: Tracking run with wandb version 0.16.1
+wandb: Run data is saved locally in /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/4/wandb/run-20240109_030811-wt4m7h5e
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run GCN
+wandb: ⭐️ View project at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29
+wandb: 🚀 View run at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/wt4m7h5e
+[[36m2024-01-09 03:08:14,710[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting training![0m
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+┏━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃    ┃ Name             ┃ Type              ┃ Params ┃
+┡━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ 0  │ encoder          │ GCNEncoder        │  272 K │
+│ 1  │ encoder.conv_in  │ GraphConv         │ 90.3 K │
+│ 2  │ encoder.bn_in    │ BatchNorm1d       │    600 │
+│ 3  │ encoder.conv_out │ GraphConv         │ 90.3 K │
+│ 4  │ encoder.bn_out   │ BatchNorm1d       │    600 │
+│ 5  │ encoder.convs    │ ModuleList        │ 90.3 K │
+│ 6  │ encoder.convs.0  │ GraphConv         │ 90.3 K │
+│ 7  │ encoder.bns      │ ModuleList        │    600 │
+│ 8  │ encoder.bns.0    │ BatchNorm1d       │    600 │
+│ 9  │ encoder.relu     │ ReLU              │      0 │
+│ 10 │ decoder          │ NodeMLPDecoder    │  180 K │
+│ 11 │ decoder.linear1  │ Linear            │  180 K │
+│ 12 │ decoder.linear2  │ Linear            │    301 │
+│ 13 │ decoder.relu     │ ReLU              │      0 │
+│ 14 │ mapper           │ MLPMapper         │  5.0 M │
+│ 15 │ mapper.fc1       │ Linear            │  451 K │
+│ 16 │ mapper.fc2       │ Linear            │  4.5 M │
+│ 17 │ mapper.relu      │ ReLU              │      0 │
+│ 18 │ train_precision  │ BinaryPrecision   │      0 │
+│ 19 │ val_precision    │ BinaryPrecision   │      0 │
+│ 20 │ test_precision   │ BinaryPrecision   │      0 │
+│ 21 │ train_recall     │ BinaryRecall      │      0 │
+│ 22 │ val_recall       │ BinaryRecall      │      0 │
+│ 23 │ test_recall      │ BinaryRecall      │      0 │
+│ 24 │ train_f1         │ BinaryF1Score     │      0 │
+│ 25 │ val_f1           │ BinaryF1Score     │      0 │
+│ 26 │ test_f1          │ BinaryF1Score     │      0 │
+│ 27 │ train_loss       │ MeanMetric        │      0 │
+│ 28 │ val_f1_best      │ MaxMetric         │      0 │
+│ 29 │ criterion        │ BCEWithLogitsLoss │      0 │
+│ 30 │ sigmoid          │ Sigmoid           │      0 │
+│ 31 │ feat             │ Embedding         │  5.9 M │
+└────┴──────────────────┴───────────────────┴────────┘
+Trainable params: 11.3 M                                                        
+Non-trainable params: 0                                                         
+Total params: 11.3 M                                                            
+Total estimated model params size (MB): 45                                      
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/loops/fit_loop.py:293: The number of training batches (22) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+[[36m2024-01-09 03:51:02,030[0m][[34murllib3.connectionpool[0m][[33mWARNING[0m] - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:1129)'))': /api/4504800232407040/envelope/[0m
+[[36m2024-01-09 03:51:12,485[0m][[34murllib3.connectionpool[0m][[33mWARNING[0m] - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'SSLError(SSLZeroReturnError(6, 'TLS/SSL connection has been closed (EOF) (_ssl.c:1129)'))': /api/4504800232407040/envelope/[0m
+Epoch 50/299 ━━━━━━━━━━━━━━━━ 22/22 0:00:43 • 0:00:00 0.51it/s v_num: 7h5e      
+                                                               train/loss_step: 
+                                                               0.015            
+                                                               val/precision:   
+                                                               0.377 val/recall:
+                                                               1.000 val/f1:    
+                                                               0.547            
+                                                               train/loss_epoch:
+                                                               0.016            
+[[36m2024-01-09 03:52:24,139[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting testing![0m
+Restoring states from the checkpoint path at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/4/checkpoints/epoch_040.ckpt
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+Loaded model weights from the checkpoint at /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/4/checkpoints/epoch_040.ckpt
+/home/snow/anaconda3/envs/graph-learning/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:441: The 'test_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=19` in the `DataLoader` to improve performance.
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃        Test metric        ┃       DataLoader 0        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│          test/f1          │    0.6779565215110779     │
+│      test/precision       │    0.5128095746040344     │
+│        test/recall        │            1.0            │
+└───────────────────────────┴───────────────────────────┘
+Testing ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4/4 0:00:03 • 0:00:00 1.29it/s 
+[[36m2024-01-09 03:52:34,651[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Best ckpt path: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/4/checkpoints/epoch_040.ckpt[0m
+[[36m2024-01-09 03:52:34,653[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Output dir: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/4[0m
+[[36m2024-01-09 03:52:34,654[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Closing wandb![0m
+wandb: - 0.207 MB of 0.207 MB uploaded (0.019 MB deduped)
+wandb:                                                                                
+wandb: W&B sync reduced upload amount by 9.1%             
+wandb: 
+wandb: Run history:
+wandb:               epoch ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇████
+wandb:             test/f1 ▁
+wandb:      test/precision ▁
+wandb:         test/recall ▁
+wandb:    train/loss_epoch ▃▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂█▂▁▁▁▁▁
+wandb:     train/loss_step ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁
+wandb: trainer/global_step ▁▁▁▁▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇████
+wandb:              val/f1 ▆▆▆▆▆▆▆▆▇▇▇▇▇▇▇▇▇▇███▇████▇█████▁▃▆▇▆▆▆▆
+wandb:       val/precision ▆▆▆▆▆▆▆▆▆▆▆▆▆▇▇▇▇▇▇▇▇▇████▇█████▁▂▆▆▆▆▆▆
+wandb:          val/recall ████████████████████████████████▁███████
+wandb: 
+wandb: Run summary:
+wandb:               epoch 51
+wandb:             test/f1 0.67796
+wandb:      test/precision 0.51281
+wandb:         test/recall 1.0
+wandb:    train/loss_epoch 0.01604
+wandb:     train/loss_step 0.01524
+wandb: trainer/global_step 1122
+wandb:              val/f1 0.54725
+wandb:       val/precision 0.37671
+wandb:          val/recall 0.99998
+wandb: 
+wandb: 🚀 View run GCN at: http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/runs/wt4m7h5e
+wandb: ️⚡ View job at http://192.168.1.130:37107/jfluidity/Graph%20Learning%20%28Diginetica%29/jobs/QXJ0aWZhY3RDb2xsZWN0aW9uOjY=/version_details/v6
+wandb: Synced 7 W&B file(s), 0 media file(s), 3 artifact file(s) and 1 other file(s)
+wandb: Find logs at: /home/snow/projects/graph-learning/logs/train/multiruns/2024-01-09_01-11-41/4/wandb/run-20240109_030811-wt4m7h5e/logs
+[[36m2024-01-09 03:52:40,418[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Metric name is None! Skipping metric value retrieval...[0m

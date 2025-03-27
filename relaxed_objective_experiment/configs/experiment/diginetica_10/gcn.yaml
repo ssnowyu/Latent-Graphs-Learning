@@ -1,0 +1,41 @@
+# @package _global_
+
+defaults:
+  - /experiment/diginetica_10/default
+  - override /model: gcn
+
+model:
+  optimizer:
+    _target_: torch.optim.Adam
+    _partial_: true
+    lr: 0.001
+    weight_decay: 1e-5
+
+  learnable_feat: true
+  num_features: 28442
+  dim_feature: 300
+  num_mixture: 10
+
+  encoder:
+    dim_in: ${model.dim_feature}
+    dim_hidden: 300
+    dim_out: ${model.dim_feature}
+    num_layers: 3
+
+  decoder:
+    _target_: src.models.components.decoder.NodeMLPDecoder
+    dim_in: ${model.encoder.dim_out}
+    dim_hidden: ${model.encoder.dim_out}
+
+  mapper:
+    _target_: src.models.components.mapper.MLPMapper
+    dim_in: ${model.encoder.dim_out}
+    num_mixture: 10
+
+tags: ["10-Mixtures", "GCN"]
+
+logger:
+  wandb:
+    tags: ${tags}
+    # group: "mnist"
+    name: "GCN"

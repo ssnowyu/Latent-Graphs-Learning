@@ -1,0 +1,6 @@
+clearml:
+  _target_: src.loggers.clearml_logger.ClearMLLogger
+  project_name: null
+  task_name: null
+  tags: null
+  save_dir: "${paths.output_dir}"

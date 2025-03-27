@@ -1,0 +1,15 @@
+_target_: src.data.graph_datamodule.GraphDataModule
+data_dir: ${paths.data_dir}
+train_val_test_split: [700, 200, 100]
+batch_size: 32
+num_workers: 0
+pin_memory: False
+
+name_for_observed_data: snapshots_local_0.1_noises.csv
+name_for_graph_data: graph_local_0.1_noises.csv
+raw_dir: raw
+save_dir: processed
+num_time_step: 5
+without_node_feature: False
+without_edge_feature: False
+processed_data_name: processed_graph_local_0.1_noises

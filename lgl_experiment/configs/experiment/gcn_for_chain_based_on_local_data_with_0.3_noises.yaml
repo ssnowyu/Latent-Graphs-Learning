@@ -1,0 +1,63 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /data: chain_local_0.3_noises.yaml
+  - override /model: gcn_for_chain.yaml
+  - override /callbacks: default.yaml
+  - override /trainer: default.yaml
+  - override /logger: clearml.yaml
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["GCN", "Local Observation", "Chain"]
+
+seed: 12345
+
+data:
+  batch_size: 16
+  raw_dir: raw
+  save_dir: processed
+
+trainer:
+  min_epochs: 5
+  max_epochs: 100
+#  gradient_clip_val: 0.5
+  accelerator: cuda
+  devices: 1
+
+model:
+  num_classes: 20
+  score_layer:
+    output_dim: ${model.num_classes}
+
+#model:
+#  lr: 0.002
+
+callbacks:
+  model_checkpoint:
+    dirpath: ${paths.output_dir}/checkpoints
+    filename: "epoch_{epoch:03d}"
+    monitor: "val/F1"
+    mode: "max"
+    save_last: True
+    auto_insert_metric_name: False
+
+  early_stopping:
+    monitor: "val/F1"
+    patience: 5
+    mode: "max"
+
+  LogMetricsAndRunningTime:
+    multi_label: True
+    num_labels: ${model.num_classes}
+
+logger:
+  clearml:
+    project_name: "Chain Learning"
+    task_name: "GCN for Chain Based local Observation with 0.3 Noises"
+    tags: ['Local Observation', '0.3 Noises']
+    save_dir: "${paths.output_dir}"

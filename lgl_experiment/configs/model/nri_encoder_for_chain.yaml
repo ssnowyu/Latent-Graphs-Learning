@@ -1,0 +1,13 @@
+_target_: src.models.nri_encoder_for_chain.NRIEncoder4Chain
+
+feat_dim: 128
+
+message_passing:
+  _target_: src.models.components.nri_mp.NRIMessagePassing
+  feat_dim: ${model.feat_dim}
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 1e-3
+  weight_decay: 1e-5

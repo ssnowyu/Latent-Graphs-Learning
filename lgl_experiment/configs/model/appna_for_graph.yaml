@@ -1,0 +1,22 @@
+_target_: src.models.appna_for_graph.APPNA4Graph
+
+feat_dim: 128
+
+appna_layer:
+  _target_: src.models.components.appna_layer.APPNALayer
+  k: 3
+  alpha: 0.5
+  input_dim: 128
+  hidden_dim: 64
+  output_dim: 32
+
+score_layer:
+  _target_: src.models.components.score_layer.ScoreLayer
+  input_dim: 64
+  hidden_dim: 32
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 1e-3
+  weight_decay: 1e-5
