@@ -56,7 +56,7 @@ conda activate exp_env1
 pip install -r requirements.txt
 ```
 
-3. Download data from [https://drive.google.com/file/d/1f3uxQQYwag36ID4h6ohFuvBnk7qZAdPr/view?usp=sharing](https://drive.google.com/file/d/1f3uxQQYwag36ID4h6ohFuvBnk7qZAdPr/view?usp=sharing) and unzip it to `lgl_experiment/data`.
+3. Download data from [data](https://drive.google.com/file/d/1f3uxQQYwag36ID4h6ohFuvBnk7qZAdPr/view?usp=sharing) and unzip it to `lgl_experiment/data`.
 
 4. We used ClearML as a presentation tool for the results. Therefore a connection to ClearML is required. please refer to https://clear.ml/docs/latest/docs/getting_started/ds/ds_first_steps
 
@@ -87,7 +87,7 @@ conda activate exp_env2
 pip install -r requirements.txt
 ```
 
-3. Download data from [https://drive.google.com/file/d/17RC3fKrOKGqYV3lA--hq_zKmJjLCmq0J/view?usp=sharing](https://drive.google.com/file/d/17RC3fKrOKGqYV3lA--hq_zKmJjLCmq0J/view?usp=sharing) and unzip it to `relaxed_objective_experiment/data`
+3. Download data from [data](https://drive.google.com/file/d/17RC3fKrOKGqYV3lA--hq_zKmJjLCmq0J/view?usp=sharing) and unzip it to `relaxed_objective_experiment/data`
 
 4. (Optional) Generate synthetic data, or use our pre-generated synthetic data in `relaxed_objective_experiment/data/custom/`
 
